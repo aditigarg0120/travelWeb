@@ -2,6 +2,7 @@ package stepdefs;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.time.LocalDate;
 
 import java.util.HashMap;
@@ -10,10 +11,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -36,10 +40,8 @@ public class StepDefinitions {
 	@Given("^I am on the travelpage$")
 	public void openBrowser() {
 		BasicConfigurator.configure();
-		System.setProperty("webdriver.chrome.driver", "C:\\workspace\\driver\\chromedriver.exe");// for
-																									// Chrome
-		System.setProperty("webdriver.gecko.driver", "C:\\workspace\\driver\\geckodriver.exe"); // for
-		// Firefox
+		System.setProperty("webdriver.chrome.driver", "C:\\workspace\\driver\\chromedriver.exe");// for Chrome
+		System.setProperty("webdriver.gecko.driver", "C:\\workspace\\driver\\geckodriver.exe"); // for Firefox
 		if (driver == null) {
 			driver = new ChromeDriver();
 			actions = new Actions(driver);
@@ -51,6 +53,9 @@ public class StepDefinitions {
 	@Then("^I should see \"([^\"]*)\"$")
 	public void i_should_see(String expectedTitle) throws Throwable {
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		// taking screenshot while page loading
+		File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		FileUtils.copyFile(scrFile, new File("c:\\workspace\\Screenshots_TravelWeb\\screenshot_1.png"));
 		String actualTitle = driver.getTitle();
 		assertEquals(expectedTitle, actualTitle);
 
@@ -187,7 +192,9 @@ public class StepDefinitions {
 	@When("^I click SEARCH button$")
 	public void i_click_SEARCH_button() throws Throwable {
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-		driver.findElement(By.xpath("//*[@id=\"flights\"]/form/div[6]/button")).sendKeys(Keys.ENTER);
+		File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		FileUtils.copyFile(scrFile, new File("c:\\workspace\\Screenshots_TravelWeb\\screenshot_2.png"));
+		driver.findElement(By.xpath("//*[@id=\"flights\"]/form/div[6]/button")).click();
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 		String actualTitle = driver.getTitle();
 		String expectedTitle = "Flights List";
@@ -209,6 +216,9 @@ public class StepDefinitions {
 		driver.findElement(By.xpath("//*[@id=\"body-section\"]/div[4]/div/div[2]/div/div[2]/div[11]/div/div[1]/ins"))
 				.click();
 		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+		File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		FileUtils.copyFile(scrFile, new File("c:\\workspace\\Screenshots_TravelWeb\\screenshot_3.png"));
+		
 	}
 
 	@When("^I click on BOOK NOW with the cheapest price$")
@@ -236,13 +246,14 @@ public class StepDefinitions {
 		Map.Entry<Integer, Integer> entry = Utility.sortByValue(pricelist).entrySet().iterator().next();
 
 		Integer lowestpricekey = entry.getKey();
-		driver.findElement(By.xpath("//*[@id=\"load_data\"]/tbody/tr[" + lowestpricekey + "]/td/div[2]/p/button"))
-				.sendKeys(Keys.ENTER);
+		driver.findElement(By.xpath("//*[@id=\"load_data\"]/tbody/tr[" + lowestpricekey + "]/td/div[2]/p/button")).sendKeys(Keys.ENTER);
 		log.info("price list retrieved:: " + lowestpricekey + "  lowest value: " + entry.getValue());
 	}
 
 	@Then("^I am taken to booking page$")
 	public void i_am_taken_to_booking_page() throws Throwable {
+		File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		FileUtils.copyFile(scrFile, new File("c:\\workspace\\Screenshots_TravelWeb\\screenshot_4.png"));
 		// check the text Booking summary should be displayed on the booking
 		// page
 		String BookingPageText = driver.findElement(By.xpath("//*[@id=\"body-section\"]/div/div/div[1]/div/div[2]/h4"))
