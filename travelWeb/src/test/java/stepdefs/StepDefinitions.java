@@ -31,6 +31,12 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import utils.Utility;
 
+/*
+ * This Class will Store the Steps definitions of the feature file
+ * @version-0.1
+ * @author-Aditi
+ */
+
 public class StepDefinitions {
 	static Logger log = Logger.getLogger(StepDefinitions.class);
 	WebDriver driver = null;
